@@ -2,10 +2,12 @@
 # ------------------------------------------------------------
 
 # Skript R pro archivaci zvoleného účtu na Twitteru
-# Jednorázově načte posledních 3200 záznamů (dalo by se jít víc do minulosti, ale bylo by nutné stránkovat - možná TODO)
-# Při dalších spuštěních načítá jen nové tweety a přidává je k původní stažené databázi
+# Jednorázově načte posledních 3200 záznamů (maximum dané knihovnou/API)
+# Dalo by se jít ještě víc do minulosti, ale bylo by pak nutné stránkovat - možná TODO
+# Při dalších spuštěních skript načítá jen nové tweety a přidává je k původní stažené databázi
+# Výsledek uloží do souboru CSV pro ruční načtení do sdílené tabulky na Google Disku
+# Tabulka by se dala aktualizovat přímo z R (knihovna googlesheets), ale je to pomalé a jsou problémy s kódováním
 
-# save.image("Twitter Jiří Ovčáček, archivace.RData")
 
 library(twitteR)
 library(data.table)
@@ -15,15 +17,15 @@ account <- "PREZIDENTmluvci"
 
 # Twitter, autentizace ----------------------------------------------------
 
-source("Auth.R")  # načte autentizační řetězce pro OAuth autentizaci
+source("Auth.R")  # načte autentizační řetězce pro OAuth autentizaci (ty má každý svoje)
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 rm(consumer_key, consumer_secret, access_token, access_secret)
 
 
-# První stažení ---------------------------------------------------------------
+# Stažení ---------------------------------------------------------------
 
 if(exists("tweets")) {
-  d <- userTimeline(user = account, n = 100, includeRts = TRUE, sinceID = tweets[, max(id)])
+  d <- userTimeline(user = account, n = 3200, includeRts = TRUE, sinceID = tweets[, max(id)])
 } else {
   d <- userTimeline(user = account, n = 3200, includeRts = TRUE)
 }
@@ -80,10 +82,9 @@ if(exists("tweets")) {
 rm(d)
 
 
-
-# Zapsání do tabulky Google Drive -----------------------------------------
+# Export do tabulky pro import -----------------------------------------
 
 write.csv(tweets, "tweets, data to import.csv", row.names = FALSE)
-# Importovat do tabulky přes Import; vybrat A2; zvolit Replace data starting at selected cell; odstranit řádek 2
+# Importovat do tabulky přes File/Import; vybrat A2; zvolit Replace data starting at selected cell; odstranit řádek 2
 
 save.image("Twitter Jiří Ovčáček, archivace.RData")
