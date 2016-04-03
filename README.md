@@ -1,5 +1,7 @@
 ﻿# README #
 
+Tabulka s archivovanými tweety Jiřího Ovčáčka (@PREZIDENTmluvci) je na https://docs.google.com/spreadsheets/d/18DCgWiNK0b0BsGfrgrzBGtKmSXvcTLLRqmg197EGIT0/edit?usp=sharing
+
 * Skript R pro archivaci zvoleného účtu na Twitteru
 * Jednorázově načte posledních 3200 záznamů (maximum dané knihovnou/API)
 * Dalo by se jít ještě víc do minulosti, ale bylo by pak nutné stránkovat - možná TODO
