@@ -14,6 +14,8 @@ library(data.table)
 
 account <- "PREZIDENTmluvci"
 
+load("Twitter Jiří Ovčáček, archivace.RData")
+
 
 # Twitter, autentizace ----------------------------------------------------
 
