@@ -9,6 +9,9 @@ library(knitr)
 
 load("Twitter Jiří Ovčáček, archivace.RData")
 
+# Zdroje (klienty)
+round(prop.table(sort(-table(tweets$source))), 2) * 100
+
 
 # Hodiny
 t.hours <- tweets %>% 
